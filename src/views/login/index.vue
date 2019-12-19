@@ -16,7 +16,7 @@
           <el-checkbox v-model="loginForm.check">我已阅读并同意用户协议和隐私条款</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-button @click="commitLogin" style="width:100%;" type="primary">登录</el-button>
+          <el-button @click="submitLogin" style="width:100%;" type="primary">登录</el-button>
         </el-form-item>
       </el-form>
     </el-card>
