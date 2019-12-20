@@ -6,9 +6,9 @@
         </el-col>
         <el-col :span="12" class="right">
             <el-row type='flex' justify="end">
-                <img src="../../assets/img/avatar.jpg" alt="">
+                <img :src="userInfo.photo?userInfo.photo:defaultImg" alt="">
                 <el-dropdown>
-                    <span>名字</span>
+                    <span>{{userInfo.name}}</span>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item>个人信息</el-dropdown-item>
                         <el-dropdown-item>git地址</el-dropdown-item>
@@ -22,7 +22,24 @@
 
 <script>
 export default {
+  data () {
+    return {
+      userInfo: {}, // 定义一个用户对象
+      defaultImg: require('../../assets/img/toutiao.png')
+    }
+  },
+  created () {
+    let token = localStorage.getItem('user-token')// 获取用户令牌
+    this.$axios({
+      url: '/user/profile',
+      headers: {
+        Authorization: `Bearer ${token}`
 
+      }
+    }).then(result => {
+      this.userInfo = result.data.data
+    })
+  }
 }
 </script>
 
