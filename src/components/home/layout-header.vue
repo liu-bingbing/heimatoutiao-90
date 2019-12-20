@@ -7,12 +7,12 @@
         <el-col :span="12" class="right">
             <el-row type='flex' justify="end">
                 <img :src="userInfo.photo?userInfo.photo:defaultImg" alt="">
-                <el-dropdown>
+                <el-dropdown @command="clickMenu">
                     <span>{{userInfo.name}}</span>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>个人信息</el-dropdown-item>
-                        <el-dropdown-item>git地址</el-dropdown-item>
-                        <el-dropdown-item>退出</el-dropdown-item>
+                        <el-dropdown-item command="info">个人信息</el-dropdown-item>
+                        <el-dropdown-item command="git">git地址</el-dropdown-item>
+                        <el-dropdown-item command="lgout">退出</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </el-row>
@@ -39,6 +39,18 @@ export default {
     }).then(result => {
       this.userInfo = result.data.data
     })
+  },
+  methods: {
+    clickMenu (command) {
+      if (command === 'info') {
+      } else if (command === 'git') {
+        window.location.href = 'https://github.com/liu-bingbing/heimatoutiao-90/commits/master'
+      } else {
+        // 退出;
+        window.localStorage.removeItem('user-token')
+        this.$router.push('/login')// 回到登录页
+      }
+    }
   }
 }
 </script>
