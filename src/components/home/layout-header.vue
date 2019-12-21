@@ -29,13 +29,13 @@ export default {
     }
   },
   created () {
-    let token = localStorage.getItem('user-token')// 获取用户令牌
+    // let token = localStorage.getItem('user-token')// 获取用户令牌-----注释掉，手动获取就不要了
     this.$axios({
-      url: '/user/profile',
-      headers: {
-        Authorization: `Bearer ${token}`
+      url: '/user/profile'
+      // headers: {
+      //   Authorization: `Bearer ${token}`
 
-      }
+      // }
     }).then(result => {
       this.userInfo = result.data.data
     })
