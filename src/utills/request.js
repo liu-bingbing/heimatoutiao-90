@@ -16,7 +16,7 @@ axios.interceptors.request.use(function (config) {
 
 })
 axios.defaults.transformResponse = [function (data) {
-  return JSONBig.parse(data)// 用Jsonbigint解决处理数字的失真问题
+  return data ? JSONBig.parse(data) : {}// 用Jsonbigint解决处理数字的失真问题
 }]
 
 // 响应拦截器

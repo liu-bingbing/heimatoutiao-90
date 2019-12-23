@@ -13,8 +13,8 @@
                     <img :src="item.url" alt="">
                     <div>
                         <el-row class="operate" type="flex" justify="space-around" align="middle">
-                            <i class="el-icon-star-on"></i>
-                            <i class="el-icon-delete"></i>
+                            <i @click="collectOrCancel(item)" :style="{color:item.is_collected?'red':'#000'}" class="el-icon-star-on"></i>
+                            <i @click="delMaterial(item.id)" class="el-icon-delete"></i>
                         </el-row>
                     </div>
                 </el-card>
@@ -55,6 +55,29 @@ export default {
     }
   },
   methods: {
+    // 删除用户图片素材：
+    delMaterial (id) {
+      this.$confirm('您确定要删除此图片吗？').then(() => {
+        this.$axios({
+          method: 'delete',
+          url: `/user/images/${id}`
+        }).then(() => {
+          this.getMaterial()// 重新拉取数据；
+        })
+      })
+    },
+    // 取消或者收藏：
+    collectOrCancel (item) {
+      this.$axios({
+        method: 'put',
+        url: `/user/images/${item.id}`,
+        data: {
+          collect: !item.is_collected // 取反，收藏就取消，取消就收藏
+        }
+      }).then(result => {
+        this.getMaterial()
+      })
+    },
     // 改变页码的方法：
     changePage (newPage) {
       this.page.currentPage = newPage
@@ -105,6 +128,9 @@ export default {
             font-size: 20px;
             height: 36px;
             background-color: #f4f5f6;
+            i {
+                cursor: pointer;
+            }
         }
     }
 }
