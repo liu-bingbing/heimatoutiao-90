@@ -47,7 +47,7 @@
         </div>
     </div>
     <el-row type="flex" justify="center" style="height:60px" align="middle">
-      <el-pagination background layout="prev,pager,next" :total="page.total" :current-page="page.currentPage" :page-size="page.pageSize" @click="changePage"></el-pagination>
+      <el-pagination background layout="prev,pager,next" :total="page.total" :current-page="page.currentPage" :page-size="page.pageSize" @current-change="changePage"></el-pagination>
     </el-row>
 </el-card>
 </template>
