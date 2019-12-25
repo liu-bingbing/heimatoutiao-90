@@ -43,9 +43,12 @@
         </div>
         <div class="right">
             <span><i class="el-icon-edit">修改</i></span>
-            <span @click="delMaterial(item.id)"><i class="el-icon-delete">删除</i></span>
+            <span><i class="el-icon-delete">删除</i></span>
         </div>
     </div>
+    <el-row type="flex" justify="center" style="height:60px" align="middle">
+      <el-pagination background layout="prev,pager,next" :total="page.total" :current-page="page.currentPage" :page-size="page.pageSize" @click="changePage"></el-pagination>
+    </el-row>
 </el-card>
 </template>
 
@@ -60,7 +63,20 @@ export default {
       },
       channels: [], // 获取频道数据
       list: [],
-      defaultImg: require('../../assets/img/avatar.jpg')// 默认图片
+      defaultImg: require('../../assets/img/avatar.jpg'), // 默认图片
+      page: {
+        currentPage: 1,
+        pageSiaze: 10,
+        total: 0
+      }
+    }
+  },
+  watch: {
+    searchForm: {
+      handler: function () {
+        this.changeCondition()// 直接调用条件改变的方法
+      },
+      deep: true
     }
   },
   filters: {
@@ -97,23 +113,33 @@ export default {
   },
   methods: {
     // 删除文章
-    delMaterial (id) {
-      this.$confirm('是否要删除文章').then(() => {
-        this.$axios({
-          method: 'delete',
-          url: `/articles/${id.toString()}`
-        }).then(result => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
-          // 重新拉取数据
-          this.getConditionArticle()
-        })
-      })
+    // delMaterial (id) {
+    //   this.$confirm('是否要删除文章').then(() => {
+    //     this.$axios({
+    //       method: 'delete',
+    //       url: `/articles/${id.toString()}`
+    //     }).then(result => {
+    //       this.$message({
+    //         type: 'success',
+    //         message: '删除成功!'
+    //       })
+    //       // 重新拉取数据
+    //       this.getConditionArticle()
+    //     })
+    //   })
+    // },
+    changePage (newPage) {
+      this.page.currentPage = newPage
+      this.getConditionArticle()
     },
     changeCondition () {
+      this.page.currentPage = 1 // 强制将页码重置为第一页
+      this.getConditionArticle()// 调用获取文章数据
+    },
+    getConditionArticle () {
       let params = {
+        page: this.page.currentPage,
+        per_page: this.page.pageSize,
         status: this.searchForm.status === 5 ? null : this.searchForm.status, // 因为5是前端自己定义的标识，表示查全部，全部应该什么都不传，直接给null
         channel_id: this.searchForm.channel_id,
         begin_pubdate: this.searchForm.dateRange.length ? this.searchForm.dateRange[0] : null, // 开始时间
@@ -135,12 +161,13 @@ export default {
         params
       }).then(result => {
         this.list = result.data.results// 获取文章列表数据
+        this.page.total = result.data.total_count// 总数
       })
     }
   },
   created () {
     this.getChannels()// 获取文章数据
-    this.getArticles()// 获取文章列表数据
+    this.getArticles({ page: 1, per_page: 10 })// 获取文章列表数据
   }
 }
 </script>
