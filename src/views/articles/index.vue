@@ -29,7 +29,7 @@
     </el-form>
     <el-row class="total" type="flex" align="middle">
         <span>
-            共找到1000条符合条件的内容
+            共找到10000条符合条件的内容
         </span>
     </el-row>
     <div class="article-item" v-for="item in list" :key="item.id.toString()">
@@ -43,7 +43,7 @@
         </div>
         <div class="right">
             <span><i class="el-icon-edit">修改</i></span>
-            <span><i class="el-icon-delete">删除</i></span>
+            <span @click="delMaterial(item.id)"><i class="el-icon-delete">删除</i></span>
         </div>
     </div>
 </el-card>
@@ -90,13 +90,28 @@ export default {
           return ''
         case 3:
           return 'danger'
-
         default:
           break
       }
     }
   },
   methods: {
+    // 删除文章
+    delMaterial (id) {
+      this.$confirm('是否要删除文章').then(() => {
+        this.$axios({
+          method: 'delete',
+          url: `/articles/${id.toString()}`
+        }).then(result => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+          // 重新拉取数据
+          this.getConditionArticle()
+        })
+      })
+    },
     changeCondition () {
       let params = {
         status: this.searchForm.status === 5 ? null : this.searchForm.status, // 因为5是前端自己定义的标识，表示查全部，全部应该什么都不传，直接给null

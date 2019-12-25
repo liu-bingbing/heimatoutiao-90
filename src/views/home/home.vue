@@ -10,7 +10,7 @@
 export default {
   data () {
     return {
-      list: ['http://img3.imgtn.bdimg.com/it/u=1267490802,3326052181&fm=26&gp=0.jpg', 'https://f10.baidu.com/it/u=2661567341,837532549&fm=72', 'http://img5.imgtn.bdimg.com/it/u=3220900070,4133744143&fm=26&gp=0.jpg', 'http://img2.imgtn.bdimg.com/it/u=1731597746,428499852&fm=26&gp=0.jpg', 'http://img4.imgtn.bdimg.com/it/u=1671223440,1615374730&fm=26&gp=0.jpg', 'http://img3.imgtn.bdimg.com/it/u=139670673,2550279246&fm=26&gp=0.jpg', 'http://img4.imgtn.bdimg.com/it/u=3890973385,1646925997&fm=26&gp=0.jpg', 'http://img3.imgtn.bdimg.com/it/u=139670673,2550279246&fm=26&gp=0.jpg']
+      list: ['http://img3.imgtn.bdimg.com/it/u=1267490802,3326052181&fm=26&gp=0.jpg', 'https://f10.baidu.com/it/u=2661567341,837532549&fm=72', 'http://img5.imgtn.bdimg.com/it/u=3220900070,4133744143&fm=26&gp=0.jpg', 'http://img2.imgtn.bdimg.com/it/u=1731597746,428499852&fm=26&gp=0.jpg', 'http://img4.imgtn.bdimg.com/it/u=1671223440,1615374730&fm=26&gp=0.jpg', 'http://img3.imgtn.bdimg.com/it/u=139670673,2550279246&fm=26&gp=0.jpg', 'http://img3.imgtn.bdimg.com/it/u=139670673,2550279246&fm=26&gp=0.jpg']
     }
   }
 }
