@@ -27,6 +27,9 @@ const routes = [
     }, {
       path: 'publish',
       component: () => import('../views/publish')
+    }, {
+      path: 'publish/:articleId', // 修改文章
+      component: () => import('../views/publish')
     }]
   }, {
     path: '/login',

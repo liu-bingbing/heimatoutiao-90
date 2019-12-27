@@ -42,8 +42,8 @@
             </div>
         </div>
         <div class="right">
-            <span><i class="el-icon-edit">修改</i></span>
-            <span><i class="el-icon-delete">删除</i></span>
+            <span @click="toModify(item.id)"><i class="el-icon-edit">修改</i></span>
+            <span @click="delMaterial(item.id)"><i class="el-icon-delete">删除</i></span>
         </div>
     </div>
     <el-row type="flex" justify="center" style="height:60px" align="middle">
@@ -128,6 +128,25 @@ export default {
     //     })
     //   })
     // },
+    toModify (id) {
+      this.$router.push(`/home/publish/${id.toString()}`)
+    },
+    delMaterial (id) {
+      this.$confirm('是否要删除该文章？').then(() => {
+        // 调用删除接口
+        this.$axios({
+          method: 'delete',
+          url: `/articles/${id.toString()}`
+        }).then(result => {
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          })
+          this.getConditionArticle()
+        })
+      })
+    },
+    // 改变页码方法
     changePage (newPage) {
       this.page.currentPage = newPage
       this.getConditionArticle()
