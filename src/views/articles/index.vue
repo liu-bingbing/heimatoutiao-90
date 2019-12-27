@@ -29,7 +29,7 @@
     </el-form>
     <el-row class="total" type="flex" align="middle">
         <span>
-            共找到10000条符合条件的内容
+            共找到{{page.total}}条符合条件的内容
         </span>
     </el-row>
     <div class="article-item" v-for="item in list" :key="item.id.toString()">
