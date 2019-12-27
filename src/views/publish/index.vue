@@ -13,13 +13,13 @@
             <quill-editor v-model="formData.content" style="height:300px"></quill-editor>
         </el-form-item>
         <el-form-item label="封面" prop="cover" style="margin-top:120px">
-            <el-radio-group v-model="formData.cover.type">
+            <el-radio-group @change="changeType" v-model="formData.cover.type">
                 <el-radio :label="1">单图</el-radio>
                 <el-radio :label="3">三图</el-radio>
                 <el-radio :label="0">无图</el-radio>
                 <el-radio :label="-1">自动</el-radio>
             </el-radio-group>
-            {{formData.cover}}
+            <cover-image :list="formData.cover.images"></cover-image>
         </el-form-item>
         <el-form-item label="频道" prop="channel_id">
             <el-select v-model="formData.channel_id">
@@ -80,8 +80,20 @@ export default {
           channel_id: null// 频道
         }
       }
-    },
-    'formData.cover.type': function () {
+    }
+    // 间听 封面类型的改变
+    // 'formData.cover.type': function () {
+    //   if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
+    //     this.formData.cover.images = []// 无图或者自动
+    //   } else if (this.formData.cover.type === 1) {
+    //     this.formData.cover.images = ['']// 单图
+    //   } else if (this.formData.cover.type === 3) {
+    //     this.formData.cover.images = ['', '', '']// 3图
+    //   }
+    // }
+  },
+  methods: {
+    changeType () {
       if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
         this.formData.cover.images = []// 无图或者自动
       } else if (this.formData.cover.type === 1) {
@@ -89,9 +101,7 @@ export default {
       } else if (this.formData.cover.type === 3) {
         this.formData.cover.images = ['', '', '']// 3图
       }
-    }
-  },
-  methods: {
+    },
     // 获取所有的频道：
     getChannels () {
       this.$axios({
@@ -146,16 +156,16 @@ export default {
           // }
         }
       })
+    },
+    getArticleById (articleId) {
+      this.$axios({
+        url: `/articles/${articleId}`
+      }).then(result => {
+        this.formData = result.data// 将数据赋值给data
+      })
     }
   },
   // 通过id查询文章数据
-  getArticleById (articleId) {
-    this.$axios({
-      url: `/articles/${articleId}`
-    }).then(result => {
-      this.formData = result.data// 将数据赋值给data
-    })
-  },
   created () {
     this.getChannels()
     let{ articleId } = this.$route.params
