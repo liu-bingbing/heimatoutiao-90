@@ -43,6 +43,7 @@ export default {
   methods: {
     clickMenu (command) {
       if (command === 'info') {
+        this.$router.push('/home/account')// 回到账户信息
       } else if (command === 'git') {
         window.location.href = 'https://github.com/liu-bingbing/heimatoutiao-90/commits/master'
       } else {
