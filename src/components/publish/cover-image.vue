@@ -1,11 +1,12 @@
 <template>
 <div class="cover-image">
-    <div @click="openDialog" class="cover-image-item" v-for="(item,index) in list" :key="index">
+    <div @click="openDialog(index)" class="cover-image-item" v-for="(item,index) in list" :key="index">
         <img :src="item ? item : defaultImg" alt="">
     </div>
     <!-- 放置一个对话框 -->
     <el-dialog title="选择封面图片" @close="closeDialog" :visible="dialogVisible">
         <!-- 需要放置另外一个组件 素材库组件和上传组件 -->
+        <select-image @selectOneImg="receiveImg"></select-image>
     </el-dialog>
 </div>
 </template>
@@ -16,12 +17,20 @@ export default {
   data () {
     return {
       defaultImg: require('../../assets/img/pic_bg.png'),
-      dialogVisible: false// 用来控制弹层的开关
+      dialogVisible: false, // 用来控制弹层的开关
+      selectIndex: -1// 用来存储点击的哪个图片的下标
     }
   },
   methods: {
-    openDialog () {
+    // 接受方法
+    receiveImg (url) {
+      // props只能读取，不能修改
+      this.$emit('selectTwoImg', url, this.selectIndex)// 再次传递
+      this.closeDialog()// 关闭弹层
+    },
+    openDialog (index) {
       this.dialogVisible = true // 打开弹层
+      this.selectIndex = index// 记录当前点击的是哪个图片
     },
     closeDialog () {
       this.dialogVisible = false// 关闭弹层

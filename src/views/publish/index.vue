@@ -19,7 +19,7 @@
                 <el-radio :label="0">无图</el-radio>
                 <el-radio :label="-1">自动</el-radio>
             </el-radio-group>
-            <cover-image :list="formData.cover.images"></cover-image>
+            <cover-image @selectTwoImg="receiveImg" :list="formData.cover.images"></cover-image>
         </el-form-item>
         <el-form-item label="频道" prop="channel_id">
             <el-select v-model="formData.channel_id">
@@ -93,6 +93,22 @@ export default {
     // }
   },
   methods: {
+    // 接收子组件数据
+    receiveImg (url, index) {
+      // 现在拿到的时url地址， 还要拿到下标 但是要修改的时数组
+      // this.formData.cover.images[index] = url// 这种写法   错误！不能保证每次都成功
+      // 响应式数据=>数据变化=>试图变化
+      // 数据变化=>vuejs=>检测到了数据变化=>vuejs 对于数组的检测变化 不能通过索引来处理
+      // Vuejs会检测到新数组 替换原数组=>进行相应是更新
+      this.formData.cover.images = this.formData.cover.images.map(function (item, i) {
+        if (index === i) {
+          // 说明找到了要替换的地址
+          return url
+        }
+        // 如果没找到 要直接返回原来的数据
+        return item
+      })
+    },
     changeType () {
       if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
         this.formData.cover.images = []// 无图或者自动
