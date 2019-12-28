@@ -108,6 +108,7 @@ export default {
         // 如果没找到 要直接返回原来的数据
         return item
       })
+      this.formData.cover.images = this.formData.cover.images.map((item, i) => i === index ? url : item)
     },
     changeType () {
       if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
