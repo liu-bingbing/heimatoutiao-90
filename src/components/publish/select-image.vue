@@ -13,7 +13,12 @@
         <el-pagination background layout="prev,pager,next" :total="page.total" :current-page="page.currentPage" :page-size="page.pageSize" @current-change="changePage"></el-pagination>
         </el-row>
     </el-tab-pane>
-    <el-tab-pane label="上传图片" name="upload"></el-tab-pane>
+    <el-tab-pane label="上传图片" name="upload">
+        <!-- 给一个action否则会报错 -->
+        <el-upload action="" :http-request="uploadImg" class="upload-img" :show-file-list="false">
+            <i class="el-icon-plus"></i>
+        </el-upload>
+    </el-tab-pane>
   </el-tabs>
 </template>
 
@@ -31,6 +36,18 @@ export default {
     }
   },
   methods: {
+    // 上传图片组件方法
+    uploadImg (params) {
+      let data = new FormData()
+      data.append('image', params.file)// 加入参数
+      this.$axios({
+        url: '/user/images',
+        method: 'post',
+        data
+      }).then(result => {
+        this.$emit('selectOneImg', result.data.url)// 自定义事件名，可以不用全小写
+      })
+    },
     // 点击图片时触发
     clickImg (url) {
       // 点击图片是，要把图片传给显示的封面
@@ -72,5 +89,12 @@ export default {
         }
     }
 }
-
+.upload-img {
+    i {
+        font-size: 50px;
+        padding:50px;
+        border:1px dashed #ccc;
+        border-radius: 4px;
+    }
+    }
 </style>
