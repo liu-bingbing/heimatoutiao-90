@@ -1,7 +1,7 @@
 <template>
     <el-row class="layout-header" type="flex" align="middle">
         <el-col :span="12" class="left">
-            <i class='el-icon-s-fold'></i>
+            <i @click="collapseOrOpen" :class="{'el-icon-s-unfold':collapse,'el-icon-s-fold':!collapse}"></i>
             <span>江苏传智播客教育科技有限公司</span>
         </el-col>
         <el-col :span="12" class="right">
@@ -25,6 +25,7 @@ import eventBus from '../../utills/eventBus'
 export default {
   data () {
     return {
+      collapse: false, // 默认展开
       userInfo: {}, // 定义一个用户对象
       defaultImg: require('../../assets/img/toutiao.png')
     }
@@ -39,6 +40,11 @@ export default {
     })
   },
   methods: {
+    // 折叠或者展开：
+    collapseOrOpen () {
+      this.collapse = !this.collapse// 不是展开就是折叠
+      eventBus.$emit('changeCollapse')// 触发一个事件
+    },
     getUserInfo () {
       this.$axios({
         url: '/user/profile'
