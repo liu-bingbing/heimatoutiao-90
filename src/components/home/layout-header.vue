@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import eventBus from '../../utills/eventBus'
 export default {
   data () {
     return {
@@ -30,17 +31,22 @@ export default {
   },
   created () {
     // let token = localStorage.getItem('user-token')// 获取用户令牌-----注释掉，手动获取就不要了
-    this.$axios({
-      url: '/user/profile'
-      // headers: {
-      //   Authorization: `Bearer ${token}`
-
-      // }
-    }).then(result => {
-      this.userInfo = result.data
+    this.getUserInfo()
+    // 开启监听
+    eventBus.$on('updateUserInfo', () => {
+      // 认为别人更新了数据，自己也应该更新数据
+      this.getUserInfo()
     })
   },
   methods: {
+    getUserInfo () {
+      this.$axios({
+        url: '/user/profile'
+      }).then(result => {
+        this.userInfo = result.data
+      })
+    },
+    // 点击菜单项时触发
     clickMenu (command) {
       if (command === 'info') {
         this.$router.push('/home/account')// 回到账户信息
