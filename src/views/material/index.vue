@@ -14,8 +14,8 @@
         <el-tab-pane label="全部图片" name="all">
             <!-- 生成页面结构 -->
             <div class="img-list">
-                <el-card class="img-card" v-for="item in list" :key="item.id">
-                    <img :src="item.url" alt="">
+                <el-card class="img-card" v-for="(item,index) in list" :key="item.id">
+                    <img @click="openDialog(index)" :src="item.url" alt="">
                     <div>
                         <el-row class="operate" type="flex" justify="space-around" align="middle">
                             <i @click="collectOrCancel(item)" :style="{color:item.is_collected?'red':'#000'}" class="el-icon-star-on"></i>
@@ -27,8 +27,8 @@
         </el-tab-pane>
         <el-tab-pane label="收藏图片" name="collect">
              <div class="img-list">
-                <el-card class="img-card" v-for="item in list" :key="item.id">
-                    <img :src="item.url" alt="">
+                <el-card class="img-card" v-for="(item,index) in list" :key="item.id">
+                    <img @click="openDialog(index)" :src="item.url" alt="">
                 </el-card>
             </div>
         </el-tab-pane>
@@ -43,6 +43,13 @@
                      layout="prev, pager, next">
                    </el-pagination>
                 </el-row>
+    <el-dialog @opened="openEnd" :visible="dialogVisible" @close="dialogVisible = false">
+      <el-carousel ref="myCarosel" indicator-position="outside" height="500px">
+    <el-carousel-item v-for="(item,index) in list" :key="index">
+      <img style="width:100%;height:100%" :src="item.url" alt="">
+    </el-carousel-item>
+  </el-carousel>
+    </el-dialog>
 </el-card>
 </template>
 
@@ -50,6 +57,7 @@
 export default {
   data () {
     return {
+      dialogVisible: false, // 弹层显示隐藏
       loading: false,
       activeName: 'all', // 默认当前选中的标签
       list: [], // 接受素材数据
@@ -57,10 +65,19 @@ export default {
         currentPage: 1,
         pageSize: 8,
         total: 0
-      }
+      },
+      clickIndex: -1// 点击的索引index
     }
   },
   methods: {
+    openEnd () {
+      // 此时已经可以获取走马灯实例了 ref
+      this.$refs.myCarosel.setActiveItem(this.clickIndex)
+    },
+    openDialog (index) {
+      this.dialogVisible = true// dialog是懒加载=>第一次打开之前是没有资格元素的
+      this.clickIndex = index// 存储一下点击索引
+    },
     // 上传图片方法：
     uploadImg (params) {
       this.loading = true// 先弹个层
